@@ -1,6 +1,8 @@
 # Fake CV generator
 
-This repo generates resumes totally fake.
+This API generates resumes and candidate information totally fake.
+I started this project to speed up my tests on the development of an ATS in Exelero.
+My intention is to expand this API to generate more realistic CV's and add the posibility to customize your candidates (nationality, kind of industry, etc...)
 
 ```
 /api/candidates
