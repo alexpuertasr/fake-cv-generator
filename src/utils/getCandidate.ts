@@ -1,50 +1,42 @@
-import { Candidate, Location } from '../types/types';
+import { Candidate, Country, GetCandidateVars, Name, Surname } from '../types/types';
 
-import namesData from './data/names.json';
-import surnamesData from './data/surnames.json';
-import locationsData from './data/locations.json';
+import dbo from '../db/conn';
 
-function getRandom<T>(array: Array<T>): T {
-  return array[Math.floor(Math.random() * array.length)];
-}
+import getEmail from './basics/getEmail';
+import getLocation from './basics/getLocation';
+import getPhone from './basics/getPhone';
 
-function getRandomNumber(digits: number): string {
-  return Math.random()
-    .toString()
-    .slice(2, digits + 2);
-}
+import getNickname from './getNickname';
 
-function getCandidate(): Candidate {
-  const names = namesData as string[];
-  const surnames = surnamesData as string[];
-  const locations = locationsData as Location[];
+async function getCandidate({ countryCode }: GetCandidateVars): Promise<Candidate> {
+  const dbConnect = dbo.getDb();
 
-  const name = getRandom(names);
-  const surname = getRandom(surnames);
+  const countries = dbConnect.collection('countries');
+  const names = dbConnect.collection('names');
+  const surnames = dbConnect.collection('surnames');
 
-  const basicName = name.toLocaleLowerCase();
-  const basicSurname = surname.toLocaleLowerCase().replaceAll(' ', '');
+  const country = await countries.findOne<Country>({ countryCode });
 
-  const emailDomain = getRandom(['gmail', 'outlook', 'hotmail']);
+  const [candidateName, streetName] = await names
+    .aggregate<Name>([{ $sample: { size: 2 } }])
+    .toArray();
 
-  const location = getRandom(locations);
+  const [candidateSurname, streetSurname] = await surnames
+    .aggregate<Surname>([{ $sample: { size: 2 } }])
+    .toArray();
+
+  const nickname = getNickname({ name: candidateName, surname: candidateSurname });
 
   return {
     basics: {
-      name: `${name} ${surname}`,
+      name: `${candidateName.name} ${candidateSurname.surname}`,
       label: null,
       image: null,
-      email: `${basicName.charAt(0)}${basicSurname}@${emailDomain}.com`,
-      phone: `+34 6${getRandomNumber(2)} ${getRandomNumber(3)} ${getRandomNumber(3)}`,
+      email: getEmail({ nickname }),
+      phone: getPhone({ country }),
       url: null,
       summary: null,
-      location: {
-        address: `C/${getRandom(names)} ${getRandom(surnames)} ${getRandomNumber(2)}`,
-        postalCode: getRandomNumber(5),
-        city: location.city,
-        countryCode: 'ES',
-        region: location.region,
-      },
+      location: getLocation({ country, streetName, streetSurname }),
       profiles: [],
     },
     work: [],

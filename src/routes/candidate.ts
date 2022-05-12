@@ -11,7 +11,8 @@ function getRoutesCandidate() {
 }
 
 async function candidate(req: Request, res: Response) {
-  res.send(getCandidate());
+  // TODO: Get country code from headers
+  res.send(await getCandidate({ countryCode: 'ES' }));
 }
 
 export { getRoutesCandidate };

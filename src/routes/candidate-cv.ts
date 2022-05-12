@@ -12,7 +12,8 @@ function getRoutesCandidateCV() {
 }
 
 async function candidateCV(req: Request, res: Response) {
-  const candidate = getCandidate();
+  // TODO: Get country code from headers
+  const candidate = await getCandidate({ countryCode: 'ES' });
   const doc = getCandidateDOC(candidate);
 
   const chunks: Uint8Array[] = [];

@@ -1,3 +1,36 @@
+export type CountryCode = 'ES';
+
+export interface Country {
+  _id: string;
+  countryName: string;
+  countryCode: string;
+  callingCode: string;
+  callingPattern: string;
+  callingRegExp: string;
+  callingFormat: string;
+  callingLength: number;
+  regions: {
+    region: string;
+    cities: {
+      city: string;
+      postalCode: string;
+    }[];
+  }[];
+}
+
+export interface Name {
+  _id: string;
+  name: string;
+  gender: 'male' | 'female';
+  countryCode: CountryCode;
+}
+
+export interface Surname {
+  _id: string;
+  surname: string;
+  countryCode: CountryCode;
+}
+
 export interface Location {
   region: string;
   city: string;
@@ -9,15 +42,15 @@ export interface Candidate {
     label: string | null;
     image: string | null;
     email: string;
-    phone: string;
+    phone: string | null;
     url: string | null;
     summary: string | null;
     location: {
       address: string;
-      postalCode: string;
-      city: string;
-      countryCode: string;
-      region: string;
+      postalCode: string | null;
+      city: string | null;
+      countryCode: string | null;
+      region: string | null;
     };
     profiles: {
       network: string;
@@ -101,4 +134,27 @@ export interface Candidate {
     entity: string;
     type: string;
   }[];
+}
+
+export interface GetCandidateVars {
+  countryCode: CountryCode;
+}
+
+export interface GetNickname {
+  name: Name;
+  surname: Surname;
+}
+
+export interface GetEmailVars {
+  nickname: string;
+}
+
+export interface GetLocationVars {
+  country: Country | null;
+  streetName: Name;
+  streetSurname: Surname;
+}
+
+export interface GetPhoneVars {
+  country: Country | null;
 }

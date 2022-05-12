@@ -47,5 +47,5 @@ The candidate information is following the standard of [JSONResume](https://json
 - [ ] Populate the rest of the candidate details
 - [ ] Add probability to the date (more frequency names and surnames)
 - [ ] Use https://generated.photos/ to get random image profile
-- [ ] Move data to a database
+- [x] Move data to a database
 - [ ] Prepare testing (Jest)

@@ -1,9 +1,0 @@
-[
-  { "region": "Andalucía", "city": "Sevilla" },
-  { "region": "Aragón", "city": "Zaragoza" },
-  { "region": "Comunidad Valenciana", "city": "Valencia" },
-  { "region": "Cataluña", "city": "Barcelona" },
-  { "region": "Cataluña", "city": "Gerona" },
-  { "region": "Comunidad de Madrid", "city": "Madrid" },
-  { "region": "País Vasco", "city": "Bilbao" }
-]

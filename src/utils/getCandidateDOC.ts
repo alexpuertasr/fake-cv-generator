@@ -23,7 +23,7 @@ function getCandidateDOC(candidate: Candidate): PDFKit.PDFDocument {
         margin: [0, 10, 0, 0],
         text: `${candidate.basics.location.city} (${candidate.basics.location.countryCode})`,
       },
-      { text: candidate.basics.phone },
+      { text: candidate.basics.phone ?? '' },
       { text: candidate.basics.email },
     ],
     styles: { header: { fontSize: 36, bold: true } },
