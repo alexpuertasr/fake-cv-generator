@@ -26,7 +26,7 @@ async function getImage({ gender }: { gender: 'male' | 'female' }): Promise<stri
         { headers: { Authorization: `API-Key ${process.env.GENERATED_PHOTOS_API_KEY}` } }
       );
 
-      const maleFaces = await response.json();
+      const maleFaces = (await response.json()) as Faces;
 
       if (!maleFaces.faces.length) malePage = 0;
 
@@ -42,7 +42,7 @@ async function getImage({ gender }: { gender: 'male' | 'female' }): Promise<stri
         { headers: { Authorization: `API-Key ${process.env.GENERATED_PHOTOS_API_KEY}` } }
       );
 
-      const femaleFaces = await response.json();
+      const femaleFaces = (await response.json()) as Faces;
 
       if (!femaleFaces.faces.length) femalePage = 0;
 
