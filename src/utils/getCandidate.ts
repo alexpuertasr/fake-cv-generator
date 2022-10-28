@@ -2,13 +2,14 @@ import { Candidate, Country, GetCandidateVars, Name, Surname } from '../types/ty
 
 import dbo from '../db/conn';
 
+import getImage from './basics/getImage';
 import getEmail from './basics/getEmail';
 import getLocation from './basics/getLocation';
 import getPhone from './basics/getPhone';
 
 import getNickname from './getNickname';
 
-async function getCandidate({ countryCode }: GetCandidateVars): Promise<Candidate> {
+async function getCandidate({ gender, countryCode }: GetCandidateVars): Promise<Candidate> {
   const dbConnect = dbo.getDb();
 
   const countries = dbConnect.collection('countries');
@@ -18,7 +19,7 @@ async function getCandidate({ countryCode }: GetCandidateVars): Promise<Candidat
   const country = await countries.findOne<Country>({ countryCode });
 
   const [candidateName, streetName] = await names
-    .aggregate<Name>([{ $sample: { size: 2 } }])
+    .aggregate<Name>([{ $match: { gender } }, { $sample: { size: 2 } }])
     .toArray();
 
   const [candidateSurname, streetSurname] = await surnames
@@ -31,7 +32,7 @@ async function getCandidate({ countryCode }: GetCandidateVars): Promise<Candidat
     basics: {
       name: `${candidateName.name} ${candidateSurname.surname}`,
       label: null,
-      image: null,
+      image: await getImage({ gender }),
       email: getEmail({ nickname }),
       phone: getPhone({ country }),
       url: null,

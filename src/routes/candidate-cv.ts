@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 
+import { Gender } from '../types/types';
 import getCandidate from '../utils/getCandidate';
 import getCandidateDOC from '../utils/getCandidateDOC';
+import getRandomElement from '../utils/getRandomElement';
 
 function getRoutesCandidateCV() {
   const router = express.Router();
@@ -11,10 +13,15 @@ function getRoutesCandidateCV() {
   return router;
 }
 
+const genderOptions: Gender[] = ['female', 'male'];
+
 async function candidateCV(req: Request, res: Response) {
-  // TODO: Get country code from headers
-  const candidate = await getCandidate({ countryCode: 'ES' });
-  const doc = getCandidateDOC(candidate);
+  let gender: Gender = getRandomElement(genderOptions);
+
+  if (req.query.gender) gender = req.query.gender as Gender;
+
+  const candidate = await getCandidate({ gender, countryCode: 'ES' });
+  const doc = await getCandidateDOC(candidate);
 
   const chunks: Uint8Array[] = [];
 

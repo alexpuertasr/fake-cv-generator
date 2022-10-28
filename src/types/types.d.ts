@@ -1,5 +1,26 @@
 export type CountryCode = 'ES';
 
+export type Gender = 'female' | 'male';
+
+export interface Name {
+  _id: string;
+  name: string;
+  gender: Gender;
+  countryCode: CountryCode;
+}
+
+export interface Surname {
+  _id: string;
+  surname: string;
+  countryCode: CountryCode;
+}
+
+export interface Faces {
+  faces: {
+    urls: { [key: string]: string }[];
+  }[];
+}
+
 export interface Country {
   _id: string;
   countryName: string;
@@ -16,19 +37,6 @@ export interface Country {
       postalCode: string;
     }[];
   }[];
-}
-
-export interface Name {
-  _id: string;
-  name: string;
-  gender: 'male' | 'female';
-  countryCode: CountryCode;
-}
-
-export interface Surname {
-  _id: string;
-  surname: string;
-  countryCode: CountryCode;
 }
 
 export interface Location {
@@ -137,6 +145,7 @@ export interface Candidate {
 }
 
 export interface GetCandidateVars {
+  gender: Gender;
   countryCode: CountryCode;
 }
 

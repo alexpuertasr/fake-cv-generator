@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { getRoutesCandidateCV } from './candidate-cv';
 import { getRoutesCandidate } from './candidate';
+import { getRoutesCandidateCV } from './candidate-cv';
 
 function getRoutes() {
   const router = express.Router();
