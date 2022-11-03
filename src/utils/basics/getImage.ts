@@ -26,6 +26,8 @@ async function getImage({ gender }: { gender: 'male' | 'female' }): Promise<stri
         { headers: { Authorization: `API-Key ${process.env.GENERATED_PHOTOS_API_KEY}` } }
       );
 
+      if (response.status !== 200) return null;
+
       const maleFaces = (await response.json()) as Faces;
 
       if (!maleFaces.faces.length) malePage = 0;
@@ -41,6 +43,8 @@ async function getImage({ gender }: { gender: 'male' | 'female' }): Promise<stri
         `https://api.generated.photos/api/v1/faces?page=${femalePage}&per_page=100&age=young-adult&gender=female`,
         { headers: { Authorization: `API-Key ${process.env.GENERATED_PHOTOS_API_KEY}` } }
       );
+
+      if (response.status !== 200) return null;
 
       const femaleFaces = (await response.json()) as Faces;
 
